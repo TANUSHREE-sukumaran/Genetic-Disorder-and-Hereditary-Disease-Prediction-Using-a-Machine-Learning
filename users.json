@@ -1,0 +1,22 @@
+[
+    {
+        "first_name": "test",
+        "last_name": "1",
+        "email": "test1@gmail.com",
+        "username": "test1",
+        "password": "scrypt:32768:8:1$SLDfVE3kidChLSnC$e662e3b5bf5c58d4cfe84bd2578c4d38c7748f13170ecd5a6de5027858bc5883660fa55cf906ca1f1a38f1dd0b0f6f562de6e33cb84191bba8805642e216c3d2",
+        "age": "36-45",
+        "purpose": "research",
+        "registration_date": "2025-10-28 21:18:27"
+    },
+    {
+        "first_name": "test",
+        "last_name": "11",
+        "email": "test11@gmail.com",
+        "username": "test11",
+        "password": "scrypt:32768:8:1$mW8y9J7RnspHypk1$fbf955a67baad5badd1bf7b85e31ee582bd2fb883da27b342bcd96b3e3df458dcc727aac519538d166b9b0342cbbd103aca562ca82afddfd7dbb63be9c4d2eee",
+        "age": "26-35",
+        "purpose": "research",
+        "registration_date": "2025-10-28 21:22:20"
+    }
+]

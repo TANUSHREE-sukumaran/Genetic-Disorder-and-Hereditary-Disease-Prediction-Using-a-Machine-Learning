@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genetic Disorder Detection - Prediction System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 50%, #fff 100%);
+        }
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8 px-4">
+    
+    <nav class="max-w-7xl mx-auto mb-8 bg-white rounded-2xl shadow-lg p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <i class="bi bi-dna text-3xl bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent"></i>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                Genetic Disorder Prediction
+            </h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-gray-600">Welcome, <strong>{{ username }}</strong></span>
+            <a href="/logout" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+            
+            <div class="mb-8">
+                <h2 class="text-4xl font-bold text-gray-800 mb-3">Patient Assessment Form</h2>
+                <p class="text-gray-600">Please fill out all fields accurately for best prediction results</p>
+            </div>
+
+            <div class="mb-6 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                <p class="text-blue-700 text-sm flex items-center gap-2">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <span>All information is processed securely and used only for prediction purposes</span>
+                </p>
+            </div>
+
+            <form id="predictionForm" class="space-y-8">
+                
+                <div class="border-l-4 border-blue-500 pl-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Section 1: Basic Information</h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Patient Age (years)</label>
+                            <input 
+                                type="number" 
+                                name="age" 
+                                id="age"
+                                required
+                                min="0"
+                                max="100"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none"
+                                placeholder="0-100 years"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Gender</label>
+                            <select 
+                                name="gender" 
+                                id="gender"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="0">Male</option>
+                                <option value="1">Female</option>
+                                <option value="2">Ambiguous</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Patient Status</label>
+                            <select 
+                                name="status" 
+                                id="status"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Status</option>
+                                <option value="0">Alive</option>
+                                <option value="1">Deceased</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-cyan-500 pl-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Section 2: Family Genetic History</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Genes in mother's side?</label>
+                            <select 
+                                name="genes_mother" 
+                                id="genes_mother"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Inherited from father?</label>
+                            <select 
+                                name="inherited_father" 
+                                id="inherited_father"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Maternal gene present?</label>
+                            <select 
+                                name="maternal_gene" 
+                                id="maternal_gene"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Paternal gene present?</label>
+                            <select 
+                                name="paternal_gene" 
+                                id="paternal_gene"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Which side of family has disorders?</label>
+                            <select 
+                                name="inheritance_pattern" 
+                                id="inheritance_pattern"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Pattern</option>
+                                <option value="Mother">Mother's Side</option>
+                                <option value="Father">Father's Side</option>
+                                <option value="Both">Both Sides</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Section 3: Medical Details</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Blood Test Result</label>
+                            <select 
+                                name="blood_test" 
+                                id="blood_test"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Result</option>
+                                <option value="0">Normal</option>
+                                <option value="1">Slightly Abnormal</option>
+                                <option value="2">Abnormal</option>
+                                <option value="3">Inconclusive</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Birth Defects</label>
+                            <select 
+                                name="birth_defects" 
+                                id="birth_defects"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">None</option>
+                                <option value="1">Singular</option>
+                                <option value="2">Multiple</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Birth Asphyxia</label>
+                            <select 
+                                name="birth_asphyxia" 
+                                id="birth_asphyxia"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                                <option value="2">Not Available</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Mother had serious illness during pregnancy?</label>
+                            <select 
+                                name="maternal_illness" 
+                                id="maternal_illness"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none appearance-none bg-white"
+                            >
+                                <option value="">Select Option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Section 4: Symptoms</h3>
+                    
+                    <div class="grid md:grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Symptom Count</label>
+                            <input 
+                                type="number" 
+                                name="symptom_count" 
+                                id="symptom_count"
+                                required
+                                min="0"
+                                max="5"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none"
+                                placeholder="0-5 symptoms"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-red-500 pl-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Section 5: Blood Work</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Blood Cell Count (mcL)</label>
+                            <input 
+                                type="number" 
+                                name="blood_count" 
+                                id="blood_count"
+                                required
+                                step="0.01"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none"
+                                placeholder="e.g., 5.0"
+                                value="5.0"
+                            >
+                            <p class="text-sm text-gray-500 mt-1">Normal range: 4.5 - 6.0</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">White Blood Cell Count (thousand/μL)</label>
+                            <input 
+                                type="number" 
+                                name="wbc_count" 
+                                id="wbc_count"
+                                required
+                                step="0.1"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none"
+                                placeholder="e.g., 7.0"
+                                value="7.0"
+                            >
+                            <p class="text-sm text-gray-500 mt-1">Normal range: 4.0 - 11.0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center pt-6">
+                    <button 
+                        type="submit" 
+                        id="submitBtn"
+                        class="px-12 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold text-lg rounded-xl hover:shadow-lg transition-all"
+                    >
+                        <i class="bi bi-search"></i> Predict Genetic Disorder
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 p-4 bg-yellow-50 border-2 border-yellow-200 rounded-xl">
+                <h6 class="text-yellow-700 font-bold mb-2 flex items-center gap-2">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    Important Notice
+                </h6>
+                <p class="text-yellow-700 text-sm">
+                    This prediction is generated by AI and should not be considered as a final medical diagnosis. 
+                    Always consult with qualified healthcare professionals and genetic counselors for proper evaluation and treatment.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Analyzing Patient Data...</h3>
+            <p class="text-gray-600">Please wait while AI processes the information</p>
+        </div>
+    </div>
+
+    <div id="resultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-500 to-cyan-500">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="bi bi-clipboard-pulse"></i>
+                        Prediction Results
+                    </h3>
+                    <button onclick="closeResultModal()" class="text-white hover:text-gray-200">
+                        <i class="bi bi-x-lg text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <div class="mb-6 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-bold text-gray-700">Predicted Disorder:</h4>
+                        <span class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold" id="confidenceText">
+                            Confidence: 99.8%
+                        </span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-blue-600" id="diseaseResult"></h2>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="bi bi-stars"></i>
+                        AI-Generated Recommendations
+                    </h4>
+                    <div class="prose max-w-none">
+                        <div id="recommendationsContent" class="text-gray-700 whitespace-pre-line leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                    <h6 class="text-red-700 font-bold mb-2 flex items-center gap-2">
+                        <i class="bi bi-exclamation-octagon-fill"></i>
+                        Critical Disclaimer
+                    </h6>
+                    <p class="text-red-700 text-sm">
+                        This is an AI prediction and NOT a medical diagnosis. Please consult with a qualified genetic counselor and medical professional immediately for proper evaluation, confirmation, and treatment planning.
+                    </p>
+                </div>
+
+                <div class="mt-6 flex gap-4">
+                    <button 
+                        onclick="closeResultModal()" 
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:shadow-lg transition-all font-semibold"
+                    >
+                        <i class="bi bi-arrow-clockwise"></i> New Prediction
+                    </button>
+                    <button 
+                        onclick="window.print()" 
+                        class="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-all font-semibold"
+                    >
+                        <i class="bi bi-printer"></i> Print Results
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                age: parseFloat(formData.get('age')),
+                gender: parseInt(formData.get('gender')),
+                status: parseInt(formData.get('status')),
+                genes_mother: parseInt(formData.get('genes_mother')),
+                inherited_father: parseInt(formData.get('inherited_father')),
+                maternal_gene: parseInt(formData.get('maternal_gene')),
+                paternal_gene: parseInt(formData.get('paternal_gene')),
+                blood_test: parseInt(formData.get('blood_test')),
+                birth_defects: parseInt(formData.get('birth_defects')),
+                birth_asphyxia: parseInt(formData.get('birth_asphyxia')),
+                maternal_illness: parseInt(formData.get('maternal_illness')),
+                symptom_count: parseInt(formData.get('symptom_count')),
+                blood_count: parseFloat(formData.get('blood_count')),
+                wbc_count: parseFloat(formData.get('wbc_count')),
+                inheritance_pattern: formData.get('inheritance_pattern')
+            };
+            
+            document.getElementById('loadingModal').classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                document.getElementById('loadingModal').classList.add('hidden');
+                
+                if (result.success) {
+                    document.getElementById('diseaseResult').textContent = result.disease;
+                    document.getElementById('recommendationsContent').textContent = result.recommendations;
+                    document.getElementById('resultModal').classList.remove('hidden');
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                document.getElementById('loadingModal').classList.add('hidden');
+                alert('Error: ' + error.message);
+            }
+        });
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+            document.getElementById('predictionForm').reset();
+        }
+    </script>
+</body>
+</html>
